@@ -123,7 +123,7 @@ lib:
 	mkdir -p lib.local
 
 lib.local/libssh: lib
-	cd lib.local && git clone git://git.libssh.org/projects/libssh.git
+	cd lib.local && git clone https://git.libssh.org/projects/libssh.git
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
