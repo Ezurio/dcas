@@ -1,11 +1,11 @@
-DCAS - Laird's Device Client Api Server
+DCAS - Device Client Api Server
 =======================================
 
 
 Licenses
 --------
 
-DCAS is Copyright 2016 Laird and licensed under the ISC
+DCAS is Copyright 2016 Ezurio and licensed under the ISC
 libssh is licensed under the LGPL v2
 OpenSSL is licensed under the OpenSSL license
 
@@ -47,10 +47,10 @@ Build for WB
 
 The build isn't integrated into the WB buildroot build system yet. For now, there's a helper makefile script. Note:
 
-* It's designed to build for a WB from the location dcas should be deployed: `wb/buildroot/package/lrd/externals/dcas`
+* It's designed to build for a WB from the location dcas should be deployed: `som-external/externals/dcas`
 * It does not build libssh. Buildroot is able to build that, so this assumes that buildroot has built it for the relevant image first.
 * It does build flatcc. It'll deploy flatcc into host tools and libraries into staging in the wb build.
-* The WB buildroot build must be done both before and after running this build. Before to get tools and dependancies taken care of. After to get dcas integrated into the final rootfs image.
+* The WB buildroot build must be done both before and after running this build. Before to get tools and dependencies taken care of. After to get dcas integrated into the final rootfs image.
 * Repeated builds are bugged, so make clean between each build.
 * Making clean won't remove the build products from the rootfs image however.
 

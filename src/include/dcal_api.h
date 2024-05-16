@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016, Laird
+Copyright (c) 2016, Ezurio
 Permission to use, copy, modify, and/or distribute this software for any
 purpose with or without fee is hereby granted, provided that the above
 copyright notice and this permission notice appear in all copies.
@@ -14,7 +14,7 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 */
 
 // This header file is for use in end users applications which utilize
-// the Laird DCAL API to setup and get status from Laird workplace bridges
+// the DCAL API to setup and get status from wireless bridges
 
 #ifndef _DCAL_API_
 #define _DCAL_API_
@@ -24,9 +24,9 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include <sys/time.h>
 
 //these three values define the API version between DCAL and DCAS
-#define LAIRD_SDK_MSB       3
-#define LAIRD_DCAL_MAJOR    1
-#define LAIRD_DCAL_MINOR    7
+#define SDC_SDK_MSB       3
+#define DCAL_MAJOR        1
+#define DCAL_MINOR        7
 #include "version.h"
 
 #ifdef __cplusplus
@@ -76,12 +76,12 @@ typedef enum _DCAL_ERR{
 
 typedef char * FQDN;
 
-typedef void * laird_session_handle;
-typedef void * laird_profile_handle;
-typedef void * laird_global_handle;
-typedef void * laird_interface_handle;
-typedef void * laird_lease_handle;
-typedef void * laird_default_route_handle;
+typedef void * session_handle;
+typedef void * profile_handle;
+typedef void * global_handle;
+typedef void * interface_handle;
+typedef void * lease_handle;
+typedef void * default_route_handle;
 
 #define MAC_SZ 6
 #define IP4_SZ 4
@@ -102,48 +102,48 @@ typedef char ipv6_str_type[IP6_STR_SZ];
 
 // API session management
 
-int dcal_session_create( laird_session_handle * session);
-int dcal_set_host( laird_session_handle session, FQDN address );
-int dcal_set_port( laird_session_handle session, unsigned int port );
-int dcal_set_user( laird_session_handle session, char * user );
-int dcal_set_pw( laird_session_handle session, char * pw );
-int dcal_set_keyfile( laird_session_handle session, char * filename);
-int dcal_get_auth_methods ( laird_session_handle s, int * method );
-int dcal_session_open ( laird_session_handle session );
-int dcal_session_close( laird_session_handle session);
+int dcal_session_create( session_handle * session);
+int dcal_set_host( session_handle session, FQDN address );
+int dcal_set_port( session_handle session, unsigned int port );
+int dcal_set_user( session_handle session, char * user );
+int dcal_set_pw( session_handle session, char * pw );
+int dcal_set_keyfile( session_handle session, char * filename);
+int dcal_get_auth_methods ( session_handle s, int * method );
+int dcal_session_open ( session_handle session );
+int dcal_session_close( session_handle session);
 
 // Device Versions
 
-int dcal_get_sdk_version(laird_session_handle session, unsigned int *sdk);
-int dcal_get_chipset_version(laird_session_handle session,
+int dcal_get_sdk_version(session_handle session, unsigned int *sdk);
+int dcal_get_chipset_version(session_handle session,
                               RADIOCHIPSET *chipset);
-int dcal_get_system_version(laird_session_handle session,
+int dcal_get_system_version(session_handle session,
                               LRD_SYSTEM *sys);
-int dcal_get_driver_version(laird_session_handle session,
+int dcal_get_driver_version(session_handle session,
                               unsigned int *driver);
-int dcal_get_dcas_version(laird_session_handle session,
+int dcal_get_dcas_version(session_handle session,
                               unsigned int *dcas);
-int dcal_get_dcal_version(laird_session_handle session,
+int dcal_get_dcal_version(session_handle session,
                               unsigned int *dcal);
-int dcal_get_firmware_version(laird_session_handle session,
+int dcal_get_firmware_version(session_handle session,
                               char *firmware, size_t buflen);
-int dcal_get_supplicant_version(laird_session_handle session,
+int dcal_get_supplicant_version(session_handle session,
                               char *supplicant, size_t buflen);
-int dcal_get_release_version(laird_session_handle session,
+int dcal_get_release_version(session_handle session,
                               char *release, size_t buflen);
 
 // Device Status
-int dcal_device_status_pull( laird_session_handle session);
+int dcal_device_status_pull( session_handle session);
 
 // things that are fairly static
-int dcal_device_status_get_settings( laird_session_handle session,
+int dcal_device_status_get_settings( session_handle session,
                                      char * profilename,
                                      size_t profilename_buflen,
                                      LRD_WF_SSID *ssid,
                                      unsigned char *mac,
                                      size_t mac_buflen);
 // things that are ccx related
-int dcal_device_status_get_ccx( laird_session_handle session,
+int dcal_device_status_get_ccx( session_handle session,
                                        unsigned char *ap_ip,
                                        size_t ap_ip_buflen,
                                        char *ap_name,
@@ -151,27 +151,27 @@ int dcal_device_status_get_ccx( laird_session_handle session,
                                        char * clientname,
                                        size_t clientname_buflen);
 // ip stack related
-int dcal_device_status_get_ipv4( laird_session_handle session,
+int dcal_device_status_get_ipv4( session_handle session,
                                        unsigned char *ipv4,
                                        size_t buflen);
 
-int dcal_device_status_get_ipv6_count( laird_session_handle session,
+int dcal_device_status_get_ipv6_count( session_handle session,
                                        size_t *count);
 
-int dcal_device_status_get_ipv6_string_at_index( laird_session_handle session,
+int dcal_device_status_get_ipv6_string_at_index( session_handle session,
                                        unsigned int index,
                                        char *ipv6,
                                        size_t buflen);
 
 // things that could change moment to moment
-int dcal_device_status_get_connection( laird_session_handle session,
+int dcal_device_status_get_connection( session_handle session,
                                        unsigned int * cardstate,
                                        unsigned int * channel,
                                        int * rssi,
                                        unsigned char *ap_mac,
                                        size_t ap_mac_buflen);
 
-int dcal_device_status_get_connection_extended( laird_session_handle session,
+int dcal_device_status_get_connection_extended( session_handle session,
                                        unsigned int *bitrate,
                                        unsigned int *txpower,
                                        unsigned int *dtim,
@@ -179,21 +179,21 @@ int dcal_device_status_get_connection_extended( laird_session_handle session,
 int dcal_device_status_get_cache_timeout( unsigned int *timeout);
 
 // WiFi Management
-int dcal_wifi_enable( laird_session_handle session);
-int dcal_wifi_disable( laird_session_handle session);
+int dcal_wifi_enable( session_handle session);
+int dcal_wifi_disable( session_handle session);
 
 // WiFi Global Management_
-// both the create and pull functions will allocate a laird_global_handle
+// both the create and pull functions will allocate a global_handle
 // that require the close_handle function to be called when done with the
 // handle
-int dcal_wifi_global_create( laird_global_handle * global);
-int dcal_wifi_global_pull( laird_session_handle session,
-                                 laird_global_handle * global);
-int dcal_wifi_global_close_handle( laird_global_handle global);
+int dcal_wifi_global_create( global_handle * global);
+int dcal_wifi_global_pull( session_handle session,
+                                 global_handle * global);
+int dcal_wifi_global_close_handle( global_handle global);
 
 // push sends the local global to the remote radio device.
-int dcal_wifi_global_push( laird_session_handle session,
-                                 laird_global_handle global);
+int dcal_wifi_global_push( session_handle session,
+                                 global_handle global);
 
 //Type 1 - server that uses PEAPv1 for PEAP with EAP-MSCHAPV2 (PEAP-MSCHAP).
 //Type 2 -uses PEAPv0 for PEAP-MSCHAP.
@@ -202,9 +202,9 @@ typedef enum _server_auth{
 	TYPE2 = 1
 } SERVER_AUTH;
 
-int dcal_wifi_global_set_auth_server( laird_global_handle global,
+int dcal_wifi_global_set_auth_server( global_handle global,
                                       SERVER_AUTH auth);
-int dcal_wifi_global_get_auth_server( laird_global_handle global,
+int dcal_wifi_global_get_auth_server( global_handle global,
                                       SERVER_AUTH *auth);
 
 typedef enum _bchannels_masks{
@@ -253,57 +253,57 @@ typedef enum _achannels_masks{
 	a_full = 0xffffff // all channels
 } A_CHAN_MASKS;
 
-int dcal_wifi_global_set_achannel_mask( laird_global_handle global,
+int dcal_wifi_global_set_achannel_mask( global_handle global,
                                         unsigned int channel_set_a);
-int dcal_wifi_global_get_achannel_mask( laird_global_handle global,
+int dcal_wifi_global_get_achannel_mask( global_handle global,
                                         unsigned int *channel_set_a);
 
-int dcal_wifi_global_set_bchannel_mask( laird_global_handle global,
+int dcal_wifi_global_set_bchannel_mask( global_handle global,
                                         unsigned int channel_set_b);
-int dcal_wifi_global_get_bchannel_mask( laird_global_handle global,
+int dcal_wifi_global_get_bchannel_mask( global_handle global,
                                         unsigned int *channel_set_b);
 
-int dcal_wifi_global_set_auto_profile( laird_global_handle global,
+int dcal_wifi_global_set_auto_profile( global_handle global,
                                        bool auto_profile);
-int dcal_wifi_global_get_auto_profile( laird_global_handle global,
+int dcal_wifi_global_get_auto_profile( global_handle global,
                                        bool *auto_profile);
 
-int dcal_wifi_global_set_beacon_miss( laird_global_handle global,
+int dcal_wifi_global_set_beacon_miss( global_handle global,
                                       unsigned int beacon_miss);
-int dcal_wifi_global_get_beacon_miss( laird_global_handle global,
+int dcal_wifi_global_get_beacon_miss( global_handle global,
                                       unsigned int *beacon_miss);
 
-int dcal_wifi_global_set_ccx( laird_global_handle global, bool ccx);
-int dcal_wifi_global_get_ccx( laird_global_handle global, bool *ccx);
+int dcal_wifi_global_set_ccx( global_handle global, bool ccx);
+int dcal_wifi_global_get_ccx( global_handle global, bool *ccx);
 
-int dcal_wifi_global_set_cert_path( laird_global_handle global,
+int dcal_wifi_global_set_cert_path( global_handle global,
                                     char *cert_path);
-int dcal_wifi_global_get_cert_path( laird_global_handle global,
+int dcal_wifi_global_get_cert_path( global_handle global,
                                     char *cert_path, size_t buf_len);
 
-int dcal_wifi_global_set_date_check( laird_global_handle global,
+int dcal_wifi_global_set_date_check( global_handle global,
                                      bool date_check);
-int dcal_wifi_global_get_date_check( laird_global_handle global,
+int dcal_wifi_global_get_date_check( global_handle global,
                                      bool *date_check);
 
-int dcal_wifi_global_set_def_adhoc_channel( laird_global_handle global,
+int dcal_wifi_global_set_def_adhoc_channel( global_handle global,
                                             unsigned int def_adhoc_channel);
-int dcal_wifi_global_get_def_adhoc_channel( laird_global_handle global,
+int dcal_wifi_global_get_def_adhoc_channel( global_handle global,
                                             unsigned int *def_adhoc_channel);
 
-int dcal_wifi_global_set_fips( laird_global_handle global, bool fips);
-int dcal_wifi_global_get_fips( laird_global_handle global, bool *fips);
+int dcal_wifi_global_set_fips( global_handle global, bool fips);
+int dcal_wifi_global_get_fips( global_handle global, bool *fips);
 
 typedef enum _pmk_caching {
 	STANDARD = 0,
 	OPMK = 1,
 } DCAL_PMK_CACHING;
-int dcal_wifi_global_set_pmk( laird_global_handle global, DCAL_PMK_CACHING pmk);
-int dcal_wifi_global_get_pmk( laird_global_handle global, DCAL_PMK_CACHING *pmk);
+int dcal_wifi_global_set_pmk( global_handle global, DCAL_PMK_CACHING pmk);
+int dcal_wifi_global_get_pmk( global_handle global, DCAL_PMK_CACHING *pmk);
 
-int dcal_wifi_global_set_probe_delay( laird_global_handle global,
+int dcal_wifi_global_set_probe_delay( global_handle global,
                                       unsigned int probe_delay);
-int dcal_wifi_global_get_probe_delay( laird_global_handle global,
+int dcal_wifi_global_get_probe_delay( global_handle global,
                                       unsigned int *probe_delay);
 #ifndef _SDC_SDK_H_
 typedef enum _regulatory_domain{
@@ -322,27 +322,27 @@ typedef enum _regulatory_domain{
 	REG_RU    = 12,	// Russia
 } REG_DOMAIN;
 #endif
-int dcal_wifi_global_get_regdomain( laird_global_handle global,
+int dcal_wifi_global_get_regdomain( global_handle global,
                                     REG_DOMAIN *regdomain);
 
-int dcal_wifi_global_set_roam_periodms( laird_global_handle global,
+int dcal_wifi_global_set_roam_periodms( global_handle global,
                                       unsigned int roam_periodms);
-int dcal_wifi_global_get_roam_periodms( laird_global_handle global,
+int dcal_wifi_global_get_roam_periodms( global_handle global,
                                       unsigned int *roam_periodms);
 
-int dcal_wifi_global_set_roam_trigger( laird_global_handle global,
+int dcal_wifi_global_set_roam_trigger( global_handle global,
                                        unsigned int roam_trigger);
-int dcal_wifi_global_get_roam_trigger( laird_global_handle global,
+int dcal_wifi_global_get_roam_trigger( global_handle global,
                                        unsigned int *roam_trigger);
 
-int dcal_wifi_global_set_rts( laird_global_handle global,
+int dcal_wifi_global_set_rts( global_handle global,
                               unsigned int rts);
-int dcal_wifi_global_get_rts( laird_global_handle global,
+int dcal_wifi_global_get_rts( global_handle global,
                               unsigned int *rts);
 
-int dcal_wifi_global_set_scan_dfs_time( laird_global_handle global,
+int dcal_wifi_global_set_scan_dfs_time( global_handle global,
                                         unsigned int scan_dfs);
-int dcal_wifi_global_get_scan_dfs_time( laird_global_handle global,
+int dcal_wifi_global_get_scan_dfs_time( global_handle global,
                                         unsigned int *scan_dfs);
 
 #ifndef _SDC_SDK_H_
@@ -355,13 +355,13 @@ typedef enum _ttls_internal_method {
 	TTLS_EAP_MSCHAPV2,
 } TTLS_INNER_METHOD;
 #endif
-int dcal_wifi_global_set_ttls_inner_method( laird_global_handle global,
+int dcal_wifi_global_set_ttls_inner_method( global_handle global,
                                 TTLS_INNER_METHOD ttls_inner_method);
-int dcal_wifi_global_get_ttls_inner_method( laird_global_handle global,
+int dcal_wifi_global_get_ttls_inner_method( global_handle global,
                                 TTLS_INNER_METHOD *ttls_inner_method);
 
-int dcal_wifi_global_set_uapsd( laird_global_handle global, bool uapsd);
-int dcal_wifi_global_get_uapsd( laird_global_handle global, bool *uapsd);
+int dcal_wifi_global_set_uapsd( global_handle global, bool uapsd);
+int dcal_wifi_global_get_uapsd( global_handle global, bool *uapsd);
 
 typedef enum _uapsd_bitmask{
 	AC_VO = 1<<0, //Access Category Voice
@@ -370,15 +370,15 @@ typedef enum _uapsd_bitmask{
 	AC_BE = 1<<3, //Access Category Best Effort
 } UAPSD_MASK;
 
-int dcal_wifi_global_set_uapsd_mask( laird_global_handle global, unsigned int uapsd);
-int dcal_wifi_global_get_uapsd_mask( laird_global_handle global, unsigned int *uapsd);
+int dcal_wifi_global_set_uapsd_mask( global_handle global, unsigned int uapsd);
+int dcal_wifi_global_get_uapsd_mask( global_handle global, unsigned int *uapsd);
 
-int dcal_wifi_global_set_wmm( laird_global_handle global, bool wmm);
-int dcal_wifi_global_get_wmm( laird_global_handle global, bool *wmm);
+int dcal_wifi_global_set_wmm( global_handle global, bool wmm);
+int dcal_wifi_global_get_wmm( global_handle global, bool *wmm);
 
-int dcal_wifi_global_set_ignore_null_ssid( laird_global_handle global,
+int dcal_wifi_global_set_ignore_null_ssid( global_handle global,
                                            bool ignore_null_ssid);
-int dcal_wifi_global_get_ignore_null_ssid( laird_global_handle global,
+int dcal_wifi_global_get_ignore_null_ssid( global_handle global,
                                            bool *ignore_null_ssid);
 
 #ifndef _SDC_SDK_H_
@@ -388,98 +388,98 @@ typedef enum _dfs_channels {
 	DFS_OPTIMIZED
 } DFS_CHANNELS;
 #endif
-int dcal_wifi_global_set_dfs_channels( laird_global_handle global,
+int dcal_wifi_global_set_dfs_channels( global_handle global,
                                        DFS_CHANNELS dfs_channels);
-int dcal_wifi_global_get_dfs_channels( laird_global_handle global,
+int dcal_wifi_global_get_dfs_channels( global_handle global,
                                        DFS_CHANNELS *dfs_channels);
 
-void dcal_wifi_global_printf( laird_global_handle global);
+void dcal_wifi_global_printf( global_handle global);
 
 // Interface Management
-// the create function will allocate a laird_interface_handle
+// the create function will allocate a interface_handle
 // that will require the close_handle function to be called when done with the
 // handle
-int dcal_wifi_interface_create( laird_interface_handle * interface);
-int dcal_wifi_interface_pull( laird_session_handle session,
-                                 laird_interface_handle * interface,
+int dcal_wifi_interface_create( interface_handle * interface);
+int dcal_wifi_interface_pull( session_handle session,
+                                 interface_handle * interface,
                                  char * interfaceName);
 
-int dcal_wifi_interface_close_handle( laird_interface_handle interface);
+int dcal_wifi_interface_close_handle( interface_handle interface);
 
 // push sends the local interface to the remote radio device.
-int dcal_wifi_interface_push( laird_session_handle session,
-                                  laird_interface_handle interface);
+int dcal_wifi_interface_push( session_handle session,
+                                  interface_handle interface);
 
-int dcal_wifi_interface_delete( laird_session_handle session,
+int dcal_wifi_interface_delete( session_handle session,
                                   char * interface_name);
 
-int dcal_wifi_interface_set_interface_name(laird_interface_handle interface,
+int dcal_wifi_interface_set_interface_name(interface_handle interface,
                                   char * interface_name );
 
-int dcal_wifi_interface_get_ipv4_state( laird_interface_handle interface,
+int dcal_wifi_interface_get_ipv4_state( interface_handle interface,
                                   bool * state);
 
-int dcal_wifi_interface_set_method( laird_interface_handle interface,
+int dcal_wifi_interface_set_method( interface_handle interface,
                                   char * method);
 
-int dcal_wifi_interface_get_method( laird_interface_handle interface,
+int dcal_wifi_interface_get_method( interface_handle interface,
                                   char * method, size_t buf_len);
 
-int dcal_wifi_interface_set_auto_start( laird_interface_handle interface,
+int dcal_wifi_interface_set_auto_start( interface_handle interface,
                                   bool auto_start);
 
-int dcal_wifi_interface_get_auto_start( laird_interface_handle interface,
+int dcal_wifi_interface_get_auto_start( interface_handle interface,
                                   bool * auto_start);
 
-int dcal_wifi_interface_set_address( laird_interface_handle interface,
+int dcal_wifi_interface_set_address( interface_handle interface,
                                   char * address);
 
-int dcal_wifi_interface_get_address( laird_interface_handle interface,
+int dcal_wifi_interface_get_address( interface_handle interface,
                                   char * address, size_t buf_len);
 
-int dcal_wifi_interface_set_netmask( laird_interface_handle interface,
+int dcal_wifi_interface_set_netmask( interface_handle interface,
                                   char * netmask);
 
-int dcal_wifi_interface_get_netmask( laird_interface_handle interface,
+int dcal_wifi_interface_get_netmask( interface_handle interface,
                                   char * netmask, size_t buf_len);
 
-int dcal_wifi_interface_set_gateway( laird_interface_handle interface,
+int dcal_wifi_interface_set_gateway( interface_handle interface,
                                   char * gateway);
 
-int dcal_wifi_interface_get_gateway( laird_interface_handle interface,
+int dcal_wifi_interface_get_gateway( interface_handle interface,
                                   char * gateway, size_t buf_len);
 
-int dcal_wifi_interface_set_broadcast_address( laird_interface_handle interface,
+int dcal_wifi_interface_set_broadcast_address( interface_handle interface,
                                   char * broadcast);
 
-int dcal_wifi_interface_get_broadcast_address( laird_interface_handle interface,
+int dcal_wifi_interface_get_broadcast_address( interface_handle interface,
                                   char * broadcast, size_t buf_len);
 
-int dcal_wifi_interface_set_nameserver( laird_interface_handle interface,
+int dcal_wifi_interface_set_nameserver( interface_handle interface,
                                   char * nameserver);
 
-int dcal_wifi_interface_get_nameserver( laird_interface_handle interface,
+int dcal_wifi_interface_get_nameserver( interface_handle interface,
                                   char * nameserver, size_t buf_len);
 
-int dcal_wifi_interface_set_state( laird_interface_handle interface,
+int dcal_wifi_interface_set_state( interface_handle interface,
                                   bool state);
 
-int dcal_wifi_interface_set_bridge( laird_interface_handle interface,
+int dcal_wifi_interface_set_bridge( interface_handle interface,
                                   bool bridge);
 
-int dcal_wifi_interface_get_bridge( laird_interface_handle interface,
+int dcal_wifi_interface_get_bridge( interface_handle interface,
                                   bool * bridge);
 
-int dcal_wifi_interface_set_ap_mode( laird_interface_handle interface,
+int dcal_wifi_interface_set_ap_mode( interface_handle interface,
                                   bool ap_mode);
 
-int dcal_wifi_interface_get_ap_mode( laird_interface_handle interface,
+int dcal_wifi_interface_get_ap_mode( interface_handle interface,
                                   bool * ap_mode);
 
-int dcal_wifi_interface_set_nat( laird_interface_handle interface,
+int dcal_wifi_interface_set_nat( interface_handle interface,
                                   bool nat);
 
-int dcal_wifi_interface_get_nat( laird_interface_handle interface,
+int dcal_wifi_interface_get_nat( interface_handle interface,
                                   bool * nat);
 
 typedef enum _interface_property {
@@ -491,103 +491,103 @@ typedef enum _interface_property {
 	DHCP		= 1 << 5,
 } INTERFACE_PROPERTY;
 
-int dcal_wifi_interface_clear_property( laird_interface_handle interface,
+int dcal_wifi_interface_clear_property( interface_handle interface,
                                   INTERFACE_PROPERTY prop);
 
-int dcal_wifi_interface_get_ipv6_state( laird_interface_handle interface,
+int dcal_wifi_interface_get_ipv6_state( interface_handle interface,
                                   bool * state6);
 
-int dcal_wifi_interface_set_dhcp6( laird_interface_handle interface,
+int dcal_wifi_interface_set_dhcp6( interface_handle interface,
                                   char * dhcp6);
 
-int dcal_wifi_interface_get_dhcp6( laird_interface_handle interface,
+int dcal_wifi_interface_get_dhcp6( interface_handle interface,
                                   char * dhcp6, size_t buf_len);
 
-int dcal_wifi_interface_set_method6( laird_interface_handle interface,
+int dcal_wifi_interface_set_method6( interface_handle interface,
                                   char * method6);
 
-int dcal_wifi_interface_get_method6( laird_interface_handle interface,
+int dcal_wifi_interface_get_method6( interface_handle interface,
                                   char * method6, size_t buf_len);
 
-int dcal_wifi_interface_set_address6( laird_interface_handle interface,
+int dcal_wifi_interface_set_address6( interface_handle interface,
                                   char * address6);
 
-int dcal_wifi_interface_get_address6( laird_interface_handle interface,
+int dcal_wifi_interface_get_address6( interface_handle interface,
                                   char * address6, size_t buf_len);
 
-int dcal_wifi_interface_set_netmask6( laird_interface_handle interface,
+int dcal_wifi_interface_set_netmask6( interface_handle interface,
                                   char * netmask6);
 
-int dcal_wifi_interface_get_netmask6( laird_interface_handle interface,
+int dcal_wifi_interface_get_netmask6( interface_handle interface,
                                   char * netmask6, size_t buf_len);
 
-int dcal_wifi_interface_set_gateway6( laird_interface_handle interface,
+int dcal_wifi_interface_set_gateway6( interface_handle interface,
                                   char * gateway6);
 
-int dcal_wifi_interface_get_gateway6( laird_interface_handle interface,
+int dcal_wifi_interface_get_gateway6( interface_handle interface,
                                   char * gateway6, size_t buf_len);
 
-int dcal_wifi_interface_set_nameserver6( laird_interface_handle interface,
+int dcal_wifi_interface_set_nameserver6( interface_handle interface,
                                   char * nameserver6);
 
-int dcal_wifi_interface_get_nameserver6( laird_interface_handle interface,
+int dcal_wifi_interface_get_nameserver6( interface_handle interface,
                                   char * nameserver6, size_t buf_len);
 
-int dcal_wifi_interface_set_state6( laird_interface_handle interface,
+int dcal_wifi_interface_set_state6( interface_handle interface,
                                   bool state6);
 
-int dcal_wifi_interface_set_nat6( laird_interface_handle interface,
+int dcal_wifi_interface_set_nat6( interface_handle interface,
                                   bool nat6);
 
-int dcal_wifi_interface_get_nat6( laird_interface_handle interface,
+int dcal_wifi_interface_get_nat6( interface_handle interface,
                                   bool * nat6);
 
-int dcal_wifi_interface_clear_property6( laird_interface_handle interface,
+int dcal_wifi_interface_clear_property6( interface_handle interface,
                                   INTERFACE_PROPERTY prop6);
 
 // Interface Lease Management
 // dcal_wifi_lease_pull will require the close_handle function to be called
 // when done with the handle
-int dcal_wifi_lease_pull( laird_session_handle session,
-                                  laird_lease_handle * lease,
+int dcal_wifi_lease_pull( session_handle session,
+                                  lease_handle * lease,
                                   char * interfaceName);
 
-int dcal_wifi_lease_close_handle( laird_lease_handle interface);
+int dcal_wifi_lease_close_handle( lease_handle interface);
 
-int dcal_wifi_lease_get_interface( laird_lease_handle lease,
+int dcal_wifi_lease_get_interface( lease_handle lease,
                                   char *interface, size_t buf_len);
 
-int dcal_wifi_lease_get_address( laird_lease_handle lease,
+int dcal_wifi_lease_get_address( lease_handle lease,
                                   char *address, size_t buf_len);
 
-int dcal_wifi_lease_get_subnet_mask( laird_lease_handle lease,
+int dcal_wifi_lease_get_subnet_mask( lease_handle lease,
                                   char *subnet_mask, size_t buf_len);
 
-int dcal_wifi_lease_get_routers( laird_lease_handle lease,
+int dcal_wifi_lease_get_routers( lease_handle lease,
                                   char *routers, size_t buf_len);
 
-int dcal_wifi_lease_get_lease_time( laird_lease_handle lease,
+int dcal_wifi_lease_get_lease_time( lease_handle lease,
                                   long *lease_time);
 
-int dcal_wifi_lease_get_message_type( laird_lease_handle lease,
+int dcal_wifi_lease_get_message_type( lease_handle lease,
                                   int *message_type);
 
-int dcal_wifi_lease_get_dns_servers( laird_lease_handle lease,
+int dcal_wifi_lease_get_dns_servers( lease_handle lease,
                                   char *dns_servers, size_t buf_len);
 
-int dcal_wifi_lease_get_dhcp_server( laird_lease_handle lease,
+int dcal_wifi_lease_get_dhcp_server( lease_handle lease,
                                   char *dhcp_server, size_t buf_len);
 
-int dcal_wifi_lease_get_domain_name( laird_lease_handle lease,
+int dcal_wifi_lease_get_domain_name( lease_handle lease,
                                   char *domain_name, size_t buf_len);
 
-int dcal_wifi_lease_get_renew( laird_lease_handle lease,
+int dcal_wifi_lease_get_renew( lease_handle lease,
                                   char *renew, size_t buf_len);
 
-int dcal_wifi_lease_get_rebind( laird_lease_handle lease,
+int dcal_wifi_lease_get_rebind( lease_handle lease,
                                   char *rebind, size_t buf_len);
 
-int dcal_wifi_lease_get_expire( laird_lease_handle lease,
+int dcal_wifi_lease_get_expire( lease_handle lease,
                                   char *expire, size_t buf_len);
 
 // Interface Default route Management
@@ -596,50 +596,50 @@ int dcal_wifi_lease_get_expire( laird_lease_handle lease,
 // If interface_name pointer is NULL, the first default route will be returned.
 // If interface_name is a valid interface, a default route will be returned
 // for that specific interface if one exists.
-int dcal_wifi_default_route_pull( laird_session_handle session,
-                                  laird_default_route_handle * default_route,
+int dcal_wifi_default_route_pull( session_handle session,
+                                  default_route_handle * default_route,
                                   char * interface_name);
 
-int dcal_wifi_default_route_close_handle( laird_default_route_handle interface);
+int dcal_wifi_default_route_close_handle( default_route_handle interface);
 
-int dcal_wifi_default_route_get_interface( laird_default_route_handle default_route,
+int dcal_wifi_default_route_get_interface( default_route_handle default_route,
                                   char *interface, size_t buf_len);
 
-int dcal_wifi_default_route_get_destination( laird_default_route_handle default_route,
+int dcal_wifi_default_route_get_destination( default_route_handle default_route,
                                   char *destination, size_t buf_len);
 
-int dcal_wifi_default_route_get_gateway( laird_default_route_handle default_route,
+int dcal_wifi_default_route_get_gateway( default_route_handle default_route,
                                   char *gateway, size_t buf_len);
 
-int dcal_wifi_default_route_get_flags( laird_default_route_handle default_route,
+int dcal_wifi_default_route_get_flags( default_route_handle default_route,
                                   int *flags);
 
-int dcal_wifi_default_route_get_metric( laird_default_route_handle default_route,
+int dcal_wifi_default_route_get_metric( default_route_handle default_route,
                                   unsigned int *metric);
 
-int dcal_wifi_default_route_get_subnet_mask( laird_default_route_handle default_route,
+int dcal_wifi_default_route_get_subnet_mask( default_route_handle default_route,
                                   char *subnet_mask, size_t buf_len);
 
-int dcal_wifi_default_route_get_mtu( laird_default_route_handle default_route,
+int dcal_wifi_default_route_get_mtu( default_route_handle default_route,
                                   unsigned int *mtu);
 
-int dcal_wifi_default_route_get_window( laird_default_route_handle default_route,
+int dcal_wifi_default_route_get_window( default_route_handle default_route,
                                   unsigned int *window);
 
-int dcal_wifi_default_route_get_irtt( laird_default_route_handle default_route,
+int dcal_wifi_default_route_get_irtt( default_route_handle default_route,
                                   unsigned int *irtt);
 
 // Wifi Scan
-int dcal_wifi_pull_scan_list(laird_session_handle session, size_t *count);
-int dcal_wifi_get_scan_list_entry_ssid(laird_session_handle session,
+int dcal_wifi_pull_scan_list(session_handle session, size_t *count);
+int dcal_wifi_get_scan_list_entry_ssid(session_handle session,
                                   int index, LRD_WF_SSID *ssid);
-int dcal_wifi_get_scan_list_entry_bssid(laird_session_handle session,
+int dcal_wifi_get_scan_list_entry_bssid(session_handle session,
                          int index, unsigned char * bssid, int bssidbuflen);
-int dcal_wifi_get_scan_list_entry_channel(laird_session_handle session,
+int dcal_wifi_get_scan_list_entry_channel(session_handle session,
                                   int index, int * channel);
-int dcal_wifi_get_scan_list_entry_rssi(laird_session_handle session,
+int dcal_wifi_get_scan_list_entry_rssi(session_handle session,
                                   int index, int * rssi);
-int dcal_wifi_get_scan_list_entry_securityMask(laird_session_handle session,
+int dcal_wifi_get_scan_list_entry_securityMask(session_handle session,
                                   int index, int * securityMask);
 #ifndef _SDC_SDK_H_
 typedef enum _LRD_WF_BSSTYPE {
@@ -647,48 +647,48 @@ typedef enum _LRD_WF_BSSTYPE {
     ADHOC
 } LRD_WF_BSSTYPE;
 #endif
-int dcal_wifi_get_scan_list_entry_type(laird_session_handle session,
+int dcal_wifi_get_scan_list_entry_type(session_handle session,
                                   int index, LRD_WF_BSSTYPE * bssType);
 
 // WiFi Profile Management_
-// both the create and pull functions will allocate a laird_profile_handle
+// both the create and pull functions will allocate a profile_handle
 // that require the close_handle function to be called when done with then
 // handle
-int dcal_wifi_pull_profile_list(laird_session_handle session, size_t *count);
-int dcal_wifi_get_profile_list_entry_profilename(laird_session_handle session, int index, char * profilename, size_t buflen);
-int dcal_wifi_get_profile_list_entry_autoprofile(laird_session_handle session, int index, bool *autoprofile);
-int dcal_wifi_get_profile_list_entry_active(laird_session_handle session, int index, bool * active);
+int dcal_wifi_pull_profile_list(session_handle session, size_t *count);
+int dcal_wifi_get_profile_list_entry_profilename(session_handle session, int index, char * profilename, size_t buflen);
+int dcal_wifi_get_profile_list_entry_autoprofile(session_handle session, int index, bool *autoprofile);
+int dcal_wifi_get_profile_list_entry_active(session_handle session, int index, bool * active);
 
-int dcal_wifi_profile_create( laird_profile_handle * profile);
-int dcal_wifi_profile_pull( laird_session_handle session,
-                                 laird_profile_handle * profile,
+int dcal_wifi_profile_create( profile_handle * profile);
+int dcal_wifi_profile_pull( session_handle session,
+                                 profile_handle * profile,
                                  char * profilename);
-int dcal_wifi_profile_close_handle( laird_profile_handle profile);
+int dcal_wifi_profile_close_handle( profile_handle profile);
 
 // push and profile_activate both send the local profile to the remote radio
 // device.  Activate_by_name only activates the named profile on the remote
 // radio
-int dcal_wifi_profile_push( laird_session_handle session,
-                                 laird_profile_handle profile);
-int dcal_wifi_profile_activate( laird_session_handle sesion,
-                                     laird_profile_handle profile);
-int dcal_wifi_profile_activate_by_name( laird_session_handle session,
+int dcal_wifi_profile_push( session_handle session,
+                                 profile_handle profile);
+int dcal_wifi_profile_activate( session_handle sesion,
+                                     profile_handle profile);
+int dcal_wifi_profile_activate_by_name( session_handle session,
                                           char * profile_name);
-int dcal_wifi_profile_delete_from_device( laird_session_handle session,
+int dcal_wifi_profile_delete_from_device( session_handle session,
                                           char * profile_name);
 
-int dcal_wifi_profile_set_profilename(laird_profile_handle profile,
+int dcal_wifi_profile_set_profilename(profile_handle profile,
                                            char * profilename );
-int dcal_wifi_profile_get_profilename(laird_profile_handle profile,
+int dcal_wifi_profile_get_profilename(profile_handle profile,
                                       char * profilename, size_t buflen );
 
 // note the SSID is not a string, as SSIDs can contain embedded non-ascii
 // characters including embedded nulls  (the SDK on the device may not yet
 // support non-ascii characters but handling it as if it can will allow us
 // future capabilities)
-int dcal_wifi_profile_set_SSID( laird_profile_handle profile,
+int dcal_wifi_profile_set_SSID( profile_handle profile,
                                        LRD_WF_SSID *ssid);
-int dcal_wifi_profile_get_SSID( laird_profile_handle profile,
+int dcal_wifi_profile_get_SSID( profile_handle profile,
                                        LRD_WF_SSID *ssid);
 
 typedef enum _encyption_standards {
@@ -701,9 +701,9 @@ typedef enum _encyption_standards {
 
 // security
 // setting an encryption standard will clear all security fields
-int dcal_wifi_profile_set_encrypt_std( laird_profile_handle profile,
+int dcal_wifi_profile_set_encrypt_std( profile_handle profile,
                                             ENCRYPT_STD estd);
-int dcal_wifi_profile_get_encrypt_std( laird_profile_handle profile,
+int dcal_wifi_profile_get_encrypt_std( profile_handle profile,
                                             ENCRYPT_STD *estd);
 typedef enum _encryption {
 	ENC_NONE = 0,
@@ -711,9 +711,9 @@ typedef enum _encryption {
 	ENC_TKIP,
 } ENCRYPTION;
 
-int dcal_wifi_profile_set_encryption( laird_profile_handle profile,
+int dcal_wifi_profile_set_encryption( profile_handle profile,
                                            ENCRYPTION enc);
-int dcal_wifi_profile_get_encryption( laird_profile_handle profile,
+int dcal_wifi_profile_get_encryption( profile_handle profile,
                                            ENCRYPTION *enc);
 #ifndef _SDC_SDK_H_
 typedef enum _auth_type {
@@ -722,122 +722,122 @@ typedef enum _auth_type {
 	AUTH_NETWORK_EAP,
 } AUTH;
 #endif
-int dcal_wifi_profile_set_auth( laird_profile_handle profile,
+int dcal_wifi_profile_set_auth( profile_handle profile,
                                      AUTH auth);
-int dcal_wifi_profile_get_auth( laird_profile_handle profile,
+int dcal_wifi_profile_get_auth( profile_handle profile,
                                      AUTH *auth);
 
-int dcal_wifi_profile_set_eap( laird_profile_handle profile,
+int dcal_wifi_profile_set_eap( profile_handle profile,
                                     EAPTYPE eap);
-int dcal_wifi_profile_get_eap( laird_profile_handle profile,
+int dcal_wifi_profile_get_eap( profile_handle profile,
                                     EAPTYPE *eap);
 
-int dcal_wifi_profile_set_psk( laird_profile_handle profile,
+int dcal_wifi_profile_set_psk( profile_handle profile,
                                     char * psk);
-int dcal_wifi_profile_psk_is_set( laird_profile_handle profile,
+int dcal_wifi_profile_psk_is_set( profile_handle profile,
                                     bool * psk);
 
-int dcal_wifi_profile_set_user( laird_profile_handle profile,
+int dcal_wifi_profile_set_user( profile_handle profile,
                                      char * user);
-int dcal_wifi_profile_user_is_set( laird_profile_handle profile,
+int dcal_wifi_profile_user_is_set( profile_handle profile,
                                      bool * user);
 
-int dcal_wifi_profile_set_password( laird_profile_handle profile,
+int dcal_wifi_profile_set_password( profile_handle profile,
                                          char * password);
-int dcal_wifi_profile_password_is_set( laird_profile_handle profile,
+int dcal_wifi_profile_password_is_set( profile_handle profile,
                                          bool * password);
 
-int dcal_wifi_profile_set_cacert( laird_profile_handle profile,
+int dcal_wifi_profile_set_cacert( profile_handle profile,
                                        char * cacert);
-int dcal_wifi_profile_cacert_is_set( laird_profile_handle profile,
+int dcal_wifi_profile_cacert_is_set( profile_handle profile,
                                        bool * cacert);
 
-int dcal_wifi_profile_set_pacfile( laird_profile_handle profile,
+int dcal_wifi_profile_set_pacfile( profile_handle profile,
                                  char * pacfilename);
-int dcal_wifi_profile_pacfile_is_set( laird_profile_handle profile,
+int dcal_wifi_profile_pacfile_is_set( profile_handle profile,
                                  bool * pacfilename);
 
-int dcal_wifi_profile_set_pacpassword( laird_profile_handle profile,
+int dcal_wifi_profile_set_pacpassword( profile_handle profile,
                                  char * pacpassword);
-int dcal_wifi_profile_pacpassword_is_set( laird_profile_handle profile,
+int dcal_wifi_profile_pacpassword_is_set( profile_handle profile,
                                  bool * pacpassword_buffer);
 
-int dcal_wifi_profile_set_usercert( laird_profile_handle profile,
+int dcal_wifi_profile_set_usercert( profile_handle profile,
                                  char * usercert);
-int dcal_wifi_profile_usercert_is_set( laird_profile_handle profile,
+int dcal_wifi_profile_usercert_is_set( profile_handle profile,
                                  bool * usercert);
 
-int dcal_wifi_profile_set_usercert_password( laird_profile_handle profile,
+int dcal_wifi_profile_set_usercert_password( profile_handle profile,
                                  char * usercert_password);
-int dcal_wifi_profile_usercert_password_is_set( laird_profile_handle profile,
+int dcal_wifi_profile_usercert_password_is_set( profile_handle profile,
                                  bool * usercert_password);
 
-int dcal_wifi_profile_set_wep_key( laird_profile_handle profile,
+int dcal_wifi_profile_set_wep_key( profile_handle profile,
                                  char * wepkey, int index);
-int dcal_wifi_profile_wep_key_is_set( laird_profile_handle profile,
+int dcal_wifi_profile_wep_key_is_set( profile_handle profile,
                                  bool * wepkey, int index);
 
-int dcal_wifi_profile_set_wep_txkey( laird_profile_handle profile,
+int dcal_wifi_profile_set_wep_txkey( profile_handle profile,
                                  unsigned int txkey);
-int dcal_wifi_profile_get_wep_txkey( laird_profile_handle profile,
+int dcal_wifi_profile_get_wep_txkey( profile_handle profile,
                                  unsigned int *txkey);
 
 // other profile settings
 
-int dcal_wifi_profile_set_clientname( laird_profile_handle profile,
+int dcal_wifi_profile_set_clientname( profile_handle profile,
                                 char * clientname);
-int dcal_wifi_profile_get_clientname( laird_profile_handle profile,
+int dcal_wifi_profile_get_clientname( profile_handle profile,
                                 char * clientname_buffer, size_t buflen);
 
-int dcal_wifi_profile_set_radiomode( laird_profile_handle profile,
+int dcal_wifi_profile_set_radiomode( profile_handle profile,
                                 RADIOMODE mode);
-int dcal_wifi_profile_get_radiomode( laird_profile_handle profile,
+int dcal_wifi_profile_get_radiomode( profile_handle profile,
                                 RADIOMODE * mode);
 
-int dcal_wifi_profile_set_powersave( laird_profile_handle profile,
+int dcal_wifi_profile_set_powersave( profile_handle profile,
                                POWERSAVE powersave);
-int dcal_wifi_profile_get_powersave( laird_profile_handle profile,
+int dcal_wifi_profile_get_powersave( profile_handle profile,
                                POWERSAVE * powersave);
 
-int dcal_wifi_profile_set_psp_delay( laird_profile_handle profile,
+int dcal_wifi_profile_set_psp_delay( profile_handle profile,
                                unsigned int pspdelay);
-int dcal_wifi_profile_get_psp_delay( laird_profile_handle profile,
+int dcal_wifi_profile_get_psp_delay( profile_handle profile,
                                unsigned int * pspdelay);
 
-int dcal_wifi_profile_set_txpower( laird_profile_handle profile,
+int dcal_wifi_profile_set_txpower( profile_handle profile,
                                int txpower);
-int dcal_wifi_profile_get_txpower( laird_profile_handle profile,
+int dcal_wifi_profile_get_txpower( profile_handle profile,
                                int *txpower);
 
-int dcal_wifi_profile_set_bitrate( laird_profile_handle profile,
+int dcal_wifi_profile_set_bitrate( profile_handle profile,
                                BITRATE bitrate);
-int dcal_wifi_profile_get_bitrate( laird_profile_handle profile,
+int dcal_wifi_profile_get_bitrate( profile_handle profile,
                                BITRATE *bitrate);
 
-int dcal_wifi_profile_set_autoprofile( laird_profile_handle profile,
+int dcal_wifi_profile_set_autoprofile( profile_handle profile,
                                bool autoprofile);
-int dcal_wifi_profile_get_autoprofile( laird_profile_handle profile,
+int dcal_wifi_profile_get_autoprofile( profile_handle profile,
                                bool *autoprofile);
 
 // Note that encrypted fields are not sent from the host.  Therefore
 // printing out locally created fields will allow the viewing of the
 // security fields, while printing profiles pulled from host will only
 // show if the security field has been set or not.
-void dcal_wifi_profile_printf( laird_profile_handle profile);
+void dcal_wifi_profile_printf( profile_handle profile);
 
 // system controls
 
-int dcal_wifi_restart( laird_session_handle session);
+int dcal_wifi_restart( session_handle session);
 // dcal_system_restart will close the session handle
-int dcal_system_restart( laird_session_handle session);
+int dcal_system_restart( session_handle session);
 
 // Time functions
 //  the values for the time_set and time_get functions are the same values
 //  as those used in the structure passed to the system functions
 //  gettimeofday() and settimeofday()
-int dcal_time_set( laird_session_handle session,
+int dcal_time_set( session_handle session,
                       time_t tv_sec, suseconds_t tv_usec);
-int dcal_time_get( laird_session_handle session,
+int dcal_time_get( session_handle session,
                       time_t *tv_sec, suseconds_t *tv_usec);
 
 // the dcal_ntpdate() function takes a character string which contains
@@ -845,7 +845,7 @@ int dcal_time_get( laird_session_handle session,
 // to ntpdate.  Example:
 //      dcal_ntpdate( session, "pool.ntp.org");
 // only [a-z],[0-9],[-./],[A-Z] characters are valid
-int dcal_ntpdate( laird_session_handle session,
+int dcal_ntpdate( session_handle session,
                       char * server_name );
 // file handling
 
@@ -853,21 +853,21 @@ int dcal_ntpdate( laird_session_handle session,
 // NULL in which case the basename of local_file will be used. The
 // remote_file will be saved to /tmp/ on WB.  NOTE: /tmp is not persistent
 // ont he WB as /tmp is a ramdisk.
-int dcal_file_push_to_wb(laird_session_handle session,
+int dcal_file_push_to_wb(session_handle session,
                              char * local_file_name,
                              char * remote_file_name);
 
 // remote_file_name is full path and filename on WB.  local_file_name is
 // the full path and file name on host. local_file_name can be NULL in
 // which case remote_file_name base name will be used in the local directory
-int dcal_file_pull_from_wb(laird_session_handle session,
+int dcal_file_pull_from_wb(session_handle session,
                              char * remote_file_name,
                              char * local_file_name);
 
 // local_cert_name is the full path and file name on local system.
 // files will be transfered to the the certificate path
 // which can be changed by dcal_wifi_global_set_cert_path()
-int dcal_cert_push_to_wb(laird_session_handle session,
+int dcal_cert_push_to_wb(session_handle session,
                              char * local_cert_name);
 
 typedef enum _fw_update_flags {
@@ -885,13 +885,13 @@ typedef enum _fw_update_flags {
 // NOTE: The disable reboot flag will be added by dcas so the user must
 // specifically call dcal_system_restart() when desiring restart after
 // fw_update.
-int dcal_fw_update(laird_session_handle session, int flags);
+int dcal_fw_update(session_handle session, int flags);
 
 // dest_file is full location and file name where log should be saved
-int dcal_pull_logs(laird_session_handle session, char * dest_file);
+int dcal_pull_logs(session_handle session, char * dest_file);
 
 // src_file is full location and file name where command file resides.
-int dcal_process_cli_command_file(laird_session_handle session, char * src_file);
+int dcal_process_cli_command_file(session_handle session, char * src_file);
 
 // misc
 

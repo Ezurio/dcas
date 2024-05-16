@@ -158,9 +158,6 @@ int verify_knownhost(ssh_session session)
 	return 0;
 }
 
-#define LAIRD_HELLO "HELLO DCAS"
-#define LAIRD_RESPONSE "WELCOME TO FAIRFIELD"
-
 void build_hello(flatcc_builder_t *B)
 {
 	flatcc_builder_reset(B);
@@ -233,7 +230,7 @@ const char * cardState_to_string(unsigned int cs)
 		case 2: return "Associated"; break;
 		case 3: return "Authenticated"; break;
 		case 4: return "FCC Test"; break;
-		case 5: return "Not Laird"; break;
+		case 5: return "Not Summit"; break;
 		case 6: return "disabled"; break;
 		case 7: return "error"; break;
 		case 8: return "AP Mode"; break;

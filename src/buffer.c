@@ -25,10 +25,6 @@
 #define ns(x) FLATBUFFERS_WRAP_NAMESPACE(DCAL_session, x)
 #include "flatcc/support/hexdump.h"
 
-#define LAIRD_HELLO "HELLO DCAS"
-#define LAIRD_RESPONSE "WELCOME TO FAIRFIELD"
-#define LAIRD_BAD_BUFFER "BAD FLAT BUFFER"
-
 #define SDKLOCK(x) (pthread_mutex_lock(x))
 #define SDKUNLOCK(x) (pthread_mutex_unlock(x))
 #define TMPDIR "/tmp"

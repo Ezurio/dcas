@@ -6,7 +6,7 @@ PATCHLEVEL = 5
 SUBLEVEL = 3
 EXTRAVERSION = 4
 
-LRD_VERSION = $(VERSION)$(if $(PATCHLEVEL),.$(PATCHLEVEL)$(if $(SUBLEVEL),.$(SUBLEVEL))$(if $(EXTRAVERSION),.$(EXTRAVERSION)))
+DCAS_VERSION = $(VERSION)$(if $(PATCHLEVEL),.$(PATCHLEVEL)$(if $(SUBLEVEL),.$(SUBLEVEL))$(if $(EXTRAVERSION),.$(EXTRAVERSION)))
 
 #
 # INCLUDE DIRECTORIES AND OPERATING SYSTEM LIBRARY
@@ -20,7 +20,7 @@ CPPCHECK := $(shell cppcheck --version 2>/dev/null)
 CPPCHECK_FLAGS = --enable=all --suppress=missingIncludeSystem --std=c99 $(INCLUDES)
 CHECK_ARGS = -k ./test
 
-CFLAGS += -Wall -Werror -Wno-misleading-indentation --std=c99 -D_LRD_VERSION_STRING=\"$(LRD_VERSION)\"
+CFLAGS += -Wall -Werror -Wno-misleading-indentation --std=c99 -DDCAS_VERSION_STRING=\"$(DCAS_VERSION)\"
 #
 # COMPILER/ASSEMBLER INVOCATIONS
 #
