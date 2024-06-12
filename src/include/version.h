@@ -3,7 +3,7 @@
 	#error "error: undefined development version - please define via build system"
 #endif
 
-#define SUMMIT_BUILD_NUMBER "0.12.0.1"
+#define SUMMIT_BUILD_NUMBER "0.12.0.0"
 
 #ifndef SDC_SDK_MSB
 #error "error: API version defines not present"
